@@ -1,0 +1,40 @@
+select *
+from `communication.comm`;
+
+
+/*How many customers joined the company last quarter*/
+select count(customer_id), tenure_in_months as customersjoined
+from `communication.comm`
+Where Tenure_in_Months = 1 AND Tenure_in_Months is NOT NULL
+GROUP BY Tenure_in_Months;
+
+
+/*Customers returning, churn and joininga profile */
+select Gender,Round(AVG(Age)) as avg_age, AVG(Tenure_in_Months) as avg_tenure, AVG(Number_of_Dependents)
+from `communication.comm`
+Where Customer_Status ='Joined'
+Group BY Gender;
+
+select Gender,Round(AVG(Age)) as avg_age, AVG(Tenure_in_Months) as avg_tenure, AVG(Number_of_Dependents)
+from `communication.comm`
+Where Customer_Status ='Stayed'
+Group BY Gender;
+
+select Gender,Round(AVG(Age)) as avg_age, AVG(Tenure_in_Months) as avg_tenure, AVG(Number_of_Dependents)
+from `communication.comm`
+Where Customer_Status ='Churned'
+Group BY Gender;
+
+/*Key drivers of customers churn*/
+Select Churn_Category, Count(Churn_Category) as countc
+from `communication.comm`
+Where Customer_Status = 'Churned'
+Group by Churn_Category
+ORDER BY countc desc;
+
+/**/
+Select Churn_Category, Count(Churn_Category) as countc, Round(AVG(Tenure_in_Months)) as avg_tenure
+from `communication.comm`
+Where Customer_Status = 'Churned' 
+Group by Churn_Category
+ORDER BY countc desc
